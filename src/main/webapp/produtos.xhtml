@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      template="template.xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <h1>Gerenciar Produto</h1>
+    
+    <h:form>
+        <p:toolbar>
+            <p:toolbarGroup>
+                <p:commandButton value="Novo" actionListener="#{produtoBean.novo()}" update="@form"></p:commandButton>
+                <p:commandButton value="Salvar" actionListener="#{produtoBean.salvar()}" rendered="#{produtoBean.estadoTela.name() != 'BUSCA'}" update="@form"></p:commandButton>
+                <p:commandButton value="#{produtoBean.estadoTela.name() == 'BUSCA'?'Buscar':'Voltar'}" actionListener="#{produtoBean.buscar()}" update="@form"></p:commandButton>
+            </p:toolbarGroup>
+        </p:toolbar>
+        <p:messages> 
+           <p:autoUpdate></p:autoUpdate>
+        </p:messages>
+        <p:panelGrid columns="2" rendered="#{produtoBean.estadoTela.name() != 'BUSCA'}">
+            <p:outputLabel value="Nome"></p:outputLabel>
+            <p:inputText value="#{produtoBean.produto.nome}"></p:inputText>
+            <p:outputLabel value="Valor"></p:outputLabel>
+            <p:inputNumber value="#{produtoBean.produto.valor}"></p:inputNumber>
+        </p:panelGrid>
+        <p:dataTable value="#{produtoBean.produtos}" var="produto" rendered="#{produtoBean.estadoTela.name() == 'BUSCA'}">
+            <p:column>
+                <p:commandButton icon="pi pi-pencil" actionListener="#{produtoBean.editar(produto)}" update="@form"></p:commandButton>
+            </p:column>
+            <p:column headerText="Nome">
+                <h:outputText value="#{produto.nome}"></h:outputText>
+            </p:column>
+            <p:column headerText="Valor">
+                <h:outputText value="#{produto.valor}">
+                    <f:convertNumber locale="pt-BR" type="currency"></f:convertNumber>
+                </h:outputText>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+    
+</ui:composition>
+

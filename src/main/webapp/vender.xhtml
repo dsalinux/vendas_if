@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="template.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <style>
+        .product-list-item {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-align: center;
+            align-items: center;
+            padding: 1rem;
+        }
+        .product-list-item .product-list-detail {
+            flex: 1 1 0;
+            -ms-flex: 1 1 0;
+        }
+        .product-list-item .product-list-action {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-direction: column;
+            flex-direction: column;
+        }
+        .product-list-item .product-list-detail .product-name {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+    </style>
+    <h:form>
+        <p:panel header="Selecionar Produto" rendered="#{vendaBean.produtoSelecionado == null}">
+            <p:dataView value="#{vendaBean.listaProdutos}" var="prod" rowsPerPageTemplate="6,12,16"
+                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        gridIcon="pi pi-th-large" listIcon="pi pi-bars">
+                
+                <p:dataViewListItem>
+                    <div class="product-list-item">
+                        <div class="product-list-detail">
+                            <div class="product-name">#{prod.nome}</div>
+                            <h:outputText value="#{prod.valor}" styleClass="product-price">
+                                <f:convertNumber currencySymbol="R$" type="currency"/>
+                            </h:outputText>
+                        </div>
+                        <div class="product-list-action">
+                            <p:commandButton value="Selecionar" icon="pi pi-shopping-cart" update="@form"
+                                             actionListener="#{vendaBean.selecionarProduto(prod)}"></p:commandButton>
+                        </div>
+                    </div>
+                </p:dataViewListItem>
+                <p:dataViewGridItem>
+                    <p:card style="height: 100%">
+                        <f:facet name="title">
+                            #{prod.nome}
+                        </f:facet>
+                        <f:facet name="subtitle">
+                            <h:outputText value="#{prod.valor}" styleClass="product-price">
+                                <f:convertNumber currencySymbol="R$" type="currency"/>
+                            </h:outputText>
+                        </f:facet>
+
+                        <f:facet name="footer">
+                            <p:commandButton value="Selecionar" icon="pi pi-shopping-cart" update="@form"
+                                             actionListener="#{vendaBean.selecionarProduto(prod)}"></p:commandButton>
+                        </f:facet>
+                    </p:card>
+                </p:dataViewGridItem>
+                
+            </p:dataView>
+        </p:panel>
+        <p:panel rendered="#{vendaBean.produtoSelecionado != null}">
+            <f:facet name="header">
+                <p:commandButton icon="pi pi-arrow-left" actionListener="#{vendaBean.cancelarSelecao()}" update="@form"></p:commandButton>
+                Vender Produto #{vendaBean.produtoSelecionado.nome}
+            </f:facet>
+            <h:panelGrid columns="3">
+                <h:outputLabel value="Cógido Cliente"></h:outputLabel>
+                <p:inputMask mask="9999" value="#{vendaBean.codigoCliente}">
+                 <p:focus />
+                </p:inputMask>
+                <p:commandButton id="venderID" icon="pi pi-wallet" actionListener="#{vendaBean.vender()}"  update="@form" value="Vender"></p:commandButton>
+                <p:defaultCommand target="venderID"></p:defaultCommand>
+            </h:panelGrid>
+            <p:dataTable value="#{vendaBean.itensVendidos}" var="item">
+                <p:column headerText="Cliente">
+                    <p:outputLabel value="#{item.cliente.codigoBarras}"></p:outputLabel>
+                </p:column>
+                <p:column headerText="Data">
+                    <p:outputLabel value="#{item.dataVenda}">
+                        <f:convertDateTime pattern="dd/MM/yy hh:mm"></f:convertDateTime>
+                    </p:outputLabel>
+                </p:column>
+                <p:column></p:column>
+            </p:dataTable>
+        </p:panel>
+    </h:form>
+
+</ui:composition>
+

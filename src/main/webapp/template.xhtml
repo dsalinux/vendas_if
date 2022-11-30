@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:menubar>
+                <p:menuitem value="Dashboard" url="index.html"></p:menuitem>
+                <p:menuitem value="Produtos" url="produtos.xhtml"></p:menuitem>
+                <p:menuitem value="Consulta Cliente" onclick="PF('dlgConsultaCliente').show()"></p:menuitem>
+                <p:menuitem value="Vender" url="vender.xhtml"></p:menuitem>
+            </p:menubar>
+            <p:spacer height="2em"></p:spacer>
+        </h:form>
+        <p:dialog widgetVar="dlgConsultaCliente" header="Consulta cliente" width="800px" height="400px" showEffect="drop" closeOnEscape="true" hideEffect="drop">
+            <p:ajax event="close" listener="#{clienteBean.fecharCliente()}" form="frmconsultacli" update="frmconsultacli"></p:ajax>
+            <h:form id="frmconsultacli">
+                <ui:include src="consulta-cliente.xhtml"></ui:include>
+            </h:form>
+        </p:dialog>
+        <p:messages showDetail="true">
+            <p:autoUpdate></p:autoUpdate>
+        </p:messages>
+
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+
+        <p:dialog widgetVar="statusDialog" modal="false" draggable="false" closable="false" resizable="false" showHeader="false">
+            <div class="text-center">
+                <i class="pi pi-spin pi-spinner loading-icon" aria-hidden="true"></i>
+            </div>
+        </p:dialog>
+
+        <ui:insert/>
+    </h:body>
+</html>
+

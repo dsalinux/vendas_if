@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <style>
+        .dados {
+            font-size: 2em;
+            font-family: monospace;
+        }
+        .dados.destaque {
+            font-weight: bold;
+        }
+        .colunaDireita {
+            padding-right: 3em;
+        }
+    </style>
+    
+        <h:panelGrid columns="3" columnClasses="colunaDireita">
+            <p:outputLabel value="Código"></p:outputLabel>
+            <p:inputMask value="#{clienteBean.codigo}" mask="9999"></p:inputMask>
+            <p:commandButton value="Buscar" actionListener="#{clienteBean.buscarCliente()}" update="@form"></p:commandButton>
+        </h:panelGrid>
+        <p:spacer height="20px"></p:spacer>
+        <p:panel header="Dados do cliente" rendered="#{clienteBean.cliente != null}">
+            <h:panelGrid columns="2" columnClasses="colunaDireita">
+                <h:outputText styleClass="dados" value="Código Cliente:"></h:outputText>
+                <h:outputText styleClass="dados destaque" value="#{clienteBean.cliente.codigoBarras}"></h:outputText>
+                
+                <h:outputText styleClass="dados" value="Saldo atual:" ></h:outputText>
+                <h:outputText styleClass="dados destaque" value="#{clienteBean.cliente.saldo}">
+                    <f:convertNumber locale="pt_BR" type="currency"></f:convertNumber>
+                </h:outputText>
+            </h:panelGrid>
+        </p:panel>
+    
+</html>
+
