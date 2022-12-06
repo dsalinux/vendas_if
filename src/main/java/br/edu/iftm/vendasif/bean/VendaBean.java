@@ -47,6 +47,15 @@ public class VendaBean extends JSFUtil {
         return produtoLogic.buscar();
     }
     
+    public void cancelarVenda(Venda venda) {
+	try {
+	    this.logic.cancelarVenda(venda);
+	    addInfoMensagem("Cancelado com sucesso.");
+	} catch (ErroUsuarioException ex) {
+	    addAvisoMensagem(codigoCliente);
+	}
+    }
+    
     public void vender(){
         try {
             logic.salvar(produtoSelecionado, codigoCliente);

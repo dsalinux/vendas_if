@@ -73,7 +73,10 @@
         <p:panel rendered="#{vendaBean.produtoSelecionado != null}">
             <f:facet name="header">
                 <p:commandButton icon="pi pi-arrow-left" actionListener="#{vendaBean.cancelarSelecao()}" update="@form"></p:commandButton>
-                Vender Produto #{vendaBean.produtoSelecionado.nome}
+                <h:outputText value="Vender Produto #{vendaBean.produtoSelecionado.nome}"></h:outputText>
+                <h:outputText value="#{vendaBean.produtoSelecionado.valor}">
+		    <f:convertNumber type="currency" locale="pt_BR"></f:convertNumber>
+		</h:outputText>
             </f:facet>
             <h:panelGrid columns="3">
                 <h:outputLabel value="Cógido Cliente"></h:outputLabel>
@@ -92,7 +95,12 @@
                         <f:convertDateTime pattern="dd/MM/yy hh:mm"></f:convertDateTime>
                     </p:outputLabel>
                 </p:column>
-                <p:column></p:column>
+                <p:column>
+		    <p:commandButton icon="pi pi-trash" value="Cancelar" styleClass="ui-button-danger" 
+				     update="@form" actionListener="#{vendaBean.cancelarVenda(item)}">
+			<p:confirm header="Confirma" message="Tem certeza que deseja cancelar esta venda?" icon="pi pi-info-circle"/>
+		    </p:commandButton>
+		</p:column>
             </p:dataTable>
         </p:panel>
     </h:form>

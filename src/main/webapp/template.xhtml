@@ -10,12 +10,16 @@
     <h:body>
         <h:form>
             <p:menubar>
-                <p:menuitem value="Dashboard" url="index.html"></p:menuitem>
+                <p:menuitem value="Dashboard" url="index.xhtml"></p:menuitem>
                 <p:menuitem value="Produtos" url="produtos.xhtml"></p:menuitem>
                 <p:menuitem value="Consulta Cliente" onclick="PF('dlgConsultaCliente').show()"></p:menuitem>
                 <p:menuitem value="Vender" url="vender.xhtml"></p:menuitem>
             </p:menubar>
             <p:spacer height="2em"></p:spacer>
+	    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+		<p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+		<p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" />
+	    </p:confirmDialog>
         </h:form>
         <p:dialog widgetVar="dlgConsultaCliente" header="Consulta cliente" width="800px" height="400px" showEffect="drop" closeOnEscape="true" hideEffect="drop">
             <p:ajax event="close" listener="#{clienteBean.fecharCliente()}" form="frmconsultacli" update="frmconsultacli"></p:ajax>
@@ -34,7 +38,8 @@
                 <i class="pi pi-spin pi-spinner loading-icon" aria-hidden="true"></i>
             </div>
         </p:dialog>
-
+	
+	
         <ui:insert/>
     </h:body>
 </html>
