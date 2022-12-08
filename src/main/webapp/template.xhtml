@@ -9,18 +9,27 @@
     </h:head>
     <h:body>
         <h:form>
-            <p:menubar>
-                <p:menuitem value="Dashboard" url="index.xhtml"></p:menuitem>
-                <p:menuitem value="Produtos" url="produtos.xhtml"></p:menuitem>
-                <p:menuitem value="Consulta Cliente" onclick="PF('dlgConsultaCliente').show()"></p:menuitem>
-                <p:menuitem value="Vender" url="vender.xhtml"></p:menuitem>
-            </p:menubar>
+            <div style="width: 100%; display: flex; gap: 20px">
+                <h:graphicImage library="imagens" name="feiraif.png" height="65px"></h:graphicImage>
+                <p:menubar style="flex: 1">
+                    <p:menuitem icon="pi pi-home" value="Dashboard" url="index.xhtml"></p:menuitem>
+                    <p:submenu icon="pi pi-shopping-bag" label="Feira">
+                        <p:menuitem icon="pi pi-box" value="Produtos" url="produtos.xhtml"></p:menuitem>
+                        <p:menuitem icon="pi pi-shopping-cart" value="Vendas" url="gerenciar-venda.xhtml"></p:menuitem>
+                        <p:separator></p:separator>
+                        <p:menuitem icon="pi pi-chart-line" value="Relatório" url="relatorio-vendas.xhtml"></p:menuitem>
+                    </p:submenu>
+                    <p:menuitem icon="pi pi-search" value="Consulta Cliente" onclick="PF('dlgConsultaCliente').show()"></p:menuitem>
+                    <p:menuitem icon="pi pi-sign-out" value="Sair" url="logout"></p:menuitem>
+                </p:menubar>
+            </div>
             <p:spacer height="2em"></p:spacer>
 	    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
 		<p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
 		<p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" />
 	    </p:confirmDialog>
         </h:form>
+        <p:separator></p:separator>
         <p:dialog widgetVar="dlgConsultaCliente" header="Consulta cliente" width="800px" height="400px" showEffect="drop" closeOnEscape="true" hideEffect="drop">
             <p:ajax event="close" listener="#{clienteBean.fecharCliente()}" form="frmconsultacli" update="frmconsultacli"></p:ajax>
             <h:form id="frmconsultacli">

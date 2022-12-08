@@ -30,6 +30,9 @@ public class VendaLogic implements Serializable {
         if(cli == null) {
             throw new ErroUsuarioException("Cliente " + codigoCliente + " não encontrado.");
         }
+        if(cli.getSaldo().subtract(produto.getValor()).floatValue() < 0f) {
+            throw new ErroUsuarioException("Cliente "+codigoCliente+" com saldo insuficiente para esta compra.");
+        }
 	cli.setSaldo(cli.getSaldo().subtract(produto.getValor()));
         Venda venda = new Venda();
         venda.setCliente(cli);

@@ -12,43 +12,33 @@ import javax.persistence.Persistence;
  *
  * @author danilo
  */
-public class ClienteDAO implements Serializable {
+public class ClienteDAO extends ConexaoDAO {
 
-    EntityManager em = null;
 
-    public EntityManager getConexao() {
-	if (em == null) {
-	    EntityManagerFactory factory = Persistence.createEntityManagerFactory("vendasifPU");
-	    em = factory.createEntityManager();
-	}
-	return em;
-    }
 
     public Cliente salvar(Cliente cliente) {
 	getConexao().getTransaction().begin();
 	cliente = getConexao().merge(cliente);
 	getConexao().getTransaction().commit();
-	getConexao().close();
-	em = null;
-	return cliente;
+        fecharConexao();
+        return cliente;
     }
 
     public Cliente buscarPorCodigo(String codigo) {
 	try {
 	    Cliente cliente = getConexao().createQuery("from Cliente cli where cli.codigoBarras = :codigo", Cliente.class)
 		    .setParameter("codigo", codigo).getSingleResult();
-	    getConexao().close();
-	    em = null;
 	    return cliente;
 	} catch (NoResultException ex) {
 	    return null;
-	}
+	} finally {
+            fecharConexao();
+        }
     }
 
     public Cliente buscarPorId(Integer id) {
 	Cliente cli = getConexao().find(Cliente.class, id);
-	getConexao().close();
-	em = null;
+	fecharConexao();
 	return cli;
     }
     
@@ -56,8 +46,7 @@ public class ClienteDAO implements Serializable {
 	try {
 	    return getConexao().createQuery("from Cliente", Cliente.class).getResultList();
 	} finally {
-	    getConexao().close();
-	    em = null;
+	    fecharConexao();
 	}
     }
 
